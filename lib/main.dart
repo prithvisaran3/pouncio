@@ -44,7 +44,9 @@ void main() async {
     debugPrint('[Pouncio Startup] Firebase initialized successfully.');
     isFirebaseInitialized = true;
   } catch (e) {
-    debugPrint('[Pouncio Startup ERROR] Failed to initialize Firebase core: $e');
+    debugPrint(
+      '[Pouncio Startup ERROR] Failed to initialize Firebase core: $e',
+    );
   }
 
   if (isFirebaseInitialized) {
@@ -52,39 +54,50 @@ void main() async {
     try {
       debugPrint('[Pouncio Startup] Configuring Push Notifications...');
       final messaging = FirebaseMessaging.instance;
-      
+
       // Request permission (especially required on iOS)
       final settings = await messaging.requestPermission(
         alert: true,
         badge: true,
         sound: true,
       );
-      debugPrint('[Pouncio Startup] Notification permission status: ${settings.authorizationStatus}');
+      debugPrint(
+        '[Pouncio Startup] Notification permission status: ${settings.authorizationStatus}',
+      );
 
       if (settings.authorizationStatus == AuthorizationStatus.authorized ||
           settings.authorizationStatus == AuthorizationStatus.provisional) {
         // Subscribe to new jobs topic (may fail on simulator due to APNS token absence)
         try {
           await messaging.subscribeToTopic('new_jobs');
-          debugPrint('[Pouncio Startup] Subscribed to "new_jobs" topic for push notifications.');
+          debugPrint(
+            '[Pouncio Startup] Subscribed to "new_jobs" topic for push notifications.',
+          );
         } catch (e) {
-          debugPrint('[Pouncio Startup WARNING] Failed to subscribe to topic "new_jobs" (expected on simulators): $e');
+          debugPrint(
+            '[Pouncio Startup WARNING] Failed to subscribe to topic "new_jobs" (expected on simulators): $e',
+          );
         }
       }
 
       // Configure foreground presentation options to display banners, play custom sound, etc.
-      await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
 
       // Configure foreground message handler
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        debugPrint('[Pouncio Foreground Message] Title: ${message.notification?.title}, Body: ${message.notification?.body}');
+        debugPrint(
+          '[Pouncio Foreground Message] Title: ${message.notification?.title}, Body: ${message.notification?.body}',
+        );
       });
     } catch (e) {
-      debugPrint('[Pouncio Startup WARNING] Failed to configure push notifications: $e');
+      debugPrint(
+        '[Pouncio Startup WARNING] Failed to configure push notifications: $e',
+      );
     }
   }
 
@@ -99,14 +112,14 @@ void main() async {
   Hive.registerAdapter(VisaStatusAdapter());
   Hive.registerAdapter(ExperienceLevelAdapter());
   Hive.registerAdapter(JobSourceAdapter());
-  
+
   Hive.registerAdapter(JobFilterImplAdapter());
   Hive.registerAdapter(VisaFilterOptionAdapter());
-  
+
   Hive.registerAdapter(NotificationItemImplAdapter());
   Hive.registerAdapter(FreshnessTierAdapter());
   Hive.registerAdapter(ReadStateAdapter());
-  
+
   Hive.registerAdapter(AppSettingsImplAdapter());
   Hive.registerAdapter(AppThemeAdapter());
 
@@ -118,16 +131,14 @@ void main() async {
     await Hive.openBox<Job>('saved_jobs');
     await Hive.openBox<String>('read_notifications');
     await Hive.openBox<String>('dismissed_notifications');
-    debugPrint('[Pouncio Startup] Hive local database boxes opened successfully.');
+    debugPrint(
+      '[Pouncio Startup] Hive local database boxes opened successfully.',
+    );
   } catch (e) {
     debugPrint('[Pouncio Startup ERROR] Failed to open Hive boxes: $e');
   }
 
-  runApp(
-    const ProviderScope(
-      child: PouncioApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: PouncioApp()));
 }
 
 class PouncioApp extends ConsumerWidget {
