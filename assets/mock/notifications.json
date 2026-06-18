@@ -1,0 +1,72 @@
+[
+  {
+    "id": "notif_01",
+    "jobId": "job_01",
+    "title": "🔥 Fresh Role — Stripe",
+    "body": "Stripe just posted 'Software Engineer, New Grad' in San Francisco, CA. Tap to apply!",
+    "postedAt": "-8m",
+    "freshnessTier": "now",
+    "readState": "unread",
+    "createdAt": "-8m"
+  },
+  {
+    "id": "notif_02",
+    "jobId": "job_02",
+    "title": "⚡ New Graduate Opening — Linear",
+    "body": "Linear just posted 'Frontend Engineer - Intern' (Remote). Sponsor status: unknown.",
+    "postedAt": "-12m",
+    "freshnessTier": "now",
+    "readState": "unread",
+    "createdAt": "-12m"
+  },
+  {
+    "id": "notif_03",
+    "jobId": "job_03",
+    "title": "🎯 Sponsor Available — Figma",
+    "body": "Figma is looking for a 'Mobile App Developer (Flutter / iOS)' in New York, NY. Check fit!",
+    "postedAt": "-22m",
+    "freshnessTier": "now",
+    "readState": "read",
+    "createdAt": "-22m"
+  },
+  {
+    "id": "notif_04",
+    "jobId": "job_05",
+    "title": "🔥 Fresh Role — Airbnb",
+    "body": "Airbnb is looking for a 'Flutter Developer, Core UI Team' in Seattle, WA. Posted 35 mins ago.",
+    "postedAt": "-35m",
+    "freshnessTier": "recent",
+    "readState": "unread",
+    "createdAt": "-35m"
+  },
+  {
+    "id": "notif_05",
+    "jobId": "job_06",
+    "title": "🎯 Sponsor Available — Ramp",
+    "body": "Ramp posted 'Backend Developer (Python/Go)' in New York, NY with visa sponsorship support.",
+    "postedAt": "-40m",
+    "freshnessTier": "recent",
+    "readState": "read",
+    "createdAt": "-40m"
+  },
+  {
+    "id": "notif_06",
+    "jobId": "job_08",
+    "title": "⚡ New Graduate Opening — Supabase",
+    "body": "Supabase posted a 'Full Stack Developer' role (Remote). Posted 55 mins ago.",
+    "postedAt": "-55m",
+    "freshnessTier": "recent",
+    "readState": "unread",
+    "createdAt": "-55m"
+  },
+  {
+    "id": "notif_07",
+    "jobId": "job_11",
+    "title": "🔥 Fresh Role — Duolingo",
+    "body": "Duolingo posted 'Product Engineer (Growth/Gamification)' in Pittsburgh, PA. Posted 2 hours ago.",
+    "postedAt": "-2h 15m",
+    "freshnessTier": "today",
+    "readState": "unread",
+    "createdAt": "-2h 15m"
+  }
+]

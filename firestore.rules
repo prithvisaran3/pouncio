@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Jobs are publicly readable, write/update/delete blocked for clients
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Notifications are publicly readable, write/update/delete blocked for clients
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // User profiles are readable and writable by the respective owner
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
