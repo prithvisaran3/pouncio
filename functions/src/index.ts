@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functionsV1 from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 import axios from "axios";
 import * as crypto from "crypto";
@@ -211,23 +211,8 @@ function generateJobId(company: string, title: string, applyUrl: string): string
 async function sendSummaryNotifications(newlyAddedJobs: any[]) {
   if (newlyAddedJobs.length === 0) return;
 
-  // Filter for jobs posted/updated in the past 15 minutes
-  const nowMs = Date.now();
-  const fifteenMinsAgoMs = nowMs - 15 * 60 * 1000;
-  
-  const recentJobs = newlyAddedJobs.filter(j => {
-    try {
-      const postedMs = new Date(j.postedAt).getTime();
-      return postedMs >= fifteenMinsAgoMs;
-    } catch (e) {
-      return false;
-    }
-  });
-
-  if (recentJobs.length === 0) {
-    console.log("[FCM] No new jobs were posted in the past 15 minutes. Skipping summary notifications.");
-    return;
-  }
+  // Use newly added jobs directly to ensure we notify about all newly discovered positions.
+  const recentJobs = newlyAddedJobs;
 
   const uniqueCompanies = Array.from(new Set(recentJobs.map(j => j.company)));
   
@@ -1304,16 +1289,17 @@ async function runScrapeAndSync() {
   };
 }
 
-// 1st Gen Cloud Scheduler Cron Job (Runs every 15 minutes)
-export const pouncioScrapeJobsCron = functions.pubsub
-  .schedule("every 15 minutes")
-  .onRun(async (context) => {
+// 1st Gen Cloud Scheduler Cron Job (Runs at 8 AM, 2 PM, 6 PM, and 1 AM America/New_York time)
+export const pouncioScrapeJobsCron = functionsV1.pubsub
+  .schedule("0 1,8,14,18 * * *")
+  .timeZone("America/New_York")
+  .onRun(async (context: any) => {
     console.log("Starting job scraping cron job...");
     await runScrapeAndSync();
   });
 
 // 1st Gen Manual HTTP trigger for testing/debugging
-export const pouncioTriggerScrapeJobs = functions.https.onRequest(async (req, res) => {
+export const pouncioTriggerScrapeJobs = functionsV1.https.onRequest(async (req, res) => {
   console.log("Manual trigger of job scraping started...");
   try {
     const stats = await runScrapeAndSync();
@@ -1325,7 +1311,7 @@ export const pouncioTriggerScrapeJobs = functions.https.onRequest(async (req, re
 });
 
 // HTTP trigger to clear all notifications in the notifications collection
-export const pouncioClearNotifications = functions.https.onRequest(async (req, res) => {
+export const pouncioClearNotifications = functionsV1.https.onRequest(async (req, res) => {
   console.log("Manual trigger to clear all notifications started...");
   try {
     const snapshot = await db.collection("notifications").get();
